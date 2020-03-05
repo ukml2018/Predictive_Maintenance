@@ -9,6 +9,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import mean_squared_error
 from scipy.special import expit
+from sklearn.metrics import r2_score
 
 #-- Setting dimension for plot
 sns.set(rc={'figure.figsize': (11.7,8.27)})
@@ -17,8 +18,8 @@ data_pm = pd.read_csv('predictive_maintenance.csv')
 
 #-- Copy the data
 data = data_pm.copy()
-#print(data_pm.dtypes)
 
+#print(data_pm.dtypes)
 #-- Structure of the Dataset
 print(data.info())
 
@@ -91,12 +92,14 @@ logistic = LogisticRegression()
 
 #-- fitting value for x and y
 logistic.fit(train_x,train_y)
+pd.set_option('display.float', lambda x: '%.3f' %x)
 pd.set_option('display.max.columns',500)
 print("Logistic co-efficient:", logistic.coef_ )
 print("Logistic Intercept : ", logistic.intercept_)
 
 #-- predict from the test data
 prediction = logistic.predict(test_x)
+pd.set_option('display.float', lambda x: '%.3f' %x)
 pd.set_option('display.max.columns',500)
 print("LR Prediction: ", prediction)
 
@@ -120,6 +123,10 @@ base_pred = np.repeat(base_pred, len(test_y))
 #-- Finding the RMSE
 base_root_mean_square_error = np.sqrt(mean_squared_error(test_y,base_pred))
 print("RMSE : ", base_root_mean_square_error)
+
+#Calculate R2 value
+#rsqure_value = r2_score(test_y,base_pred)
+#print("R2 value:", rsqure_value)
 
 # Fit the classifier
 clf = LogisticRegression(C=1e5)
